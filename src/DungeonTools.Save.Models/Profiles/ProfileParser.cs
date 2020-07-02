@@ -17,14 +17,14 @@ namespace DungeonTools.Save.Models.Profiles {
 
         public static async ValueTask<ProfileSaveFile> Read(Stream stream) {
             using BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, false);
-            await using MemoryStream sanitized = new MemoryStream();
+            using MemoryStream sanitized = new MemoryStream();
             while(reader.BaseStream.Position < reader.BaseStream.Length) {
                 byte b = reader.ReadByte();
                 if(char.IsControl((char) b)) {
                     continue;
                 }
 
-                sanitized.Write(new[] { b });
+                sanitized.WriteByte(b);
             }
 
             sanitized.Seek(0, SeekOrigin.Begin);

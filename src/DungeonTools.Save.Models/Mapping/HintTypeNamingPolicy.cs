@@ -5,7 +5,8 @@ namespace DungeonTools.Save.Models.Mapping {
     public class HintTypeNamingPolicy : INamingPolicy<HintType> {
         /// <inheritdoc />
         public HintType ConvertName(string name) {
-            return Enum.Parse<HintType>(name.Contains('_') ? name.Replace("_", "") : name);
+            //return Enum.Parse<HintType>(name.Contains('_') ? name.Replace("_", "") : name);
+            return (HintType)Enum.Parse(typeof(HintType), name.Contains("_") ? name.Replace("_", "") : name);
         }
 
         /// <inheritdoc />
