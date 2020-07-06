@@ -7,7 +7,7 @@ using DungeonTools.Server.Shared;
 
 namespace DungeonTools.Save.File {
     public class RemoteEncryptionProvider : IEncryptionProvider {
-#if DEBUG
+#if USE_LOCAL_SERVER
         private const string ClientAddress = ServerConstants.LocalServer;
 #else
         private const string ClientAddress = ServerConstants.RemoteServer;

@@ -10,7 +10,7 @@ namespace DungeonTools.Server.Shared {
         internal const string ControllerDecryptionName = "decrypt";
 
         public const string LocalServer = "http://127.0.0.1:5000/";
-        public const string RemoteServer = "http://dungeons.tools/";
+        public const string RemoteServer = "https://dungeons.tools/";
 
         public const string KeysEndpoint = ControllerName + "/" + ControllerKeysName;
         public const string EncryptEndpoint = ControllerName + "/" + ControllerEncryptionName;

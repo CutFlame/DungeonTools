@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DungeonTools.Server.Shared {
@@ -10,7 +11,9 @@ namespace DungeonTools.Server.Shared {
         [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         public string? Decrypted { get; set; }
 
+        [JsonIgnore]
         public Stream? EncryptedStream => Encrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Encrypted))) : null;
+        [JsonIgnore]
         public Stream? DecryptedStream => Decrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Decrypted))) : null;
 
         public static async ValueTask<EncryptionData> From(Stream? encrypted, Stream? decrypted) {
@@ -28,8 +31,9 @@ namespace DungeonTools.Server.Shared {
         }
 
         private static async ValueTask<string> GetBase64Data(Stream stream) {
-            byte[] data = new byte[stream.Length-stream.Position];
-            await stream.ReadAsync(data);
+            int count = (int)(stream.Length - stream.Position);
+            byte[] data = new byte[count];
+            await stream.ReadAsync(data, 0, count);
             return Convert.ToBase64String(data);
         }
 
