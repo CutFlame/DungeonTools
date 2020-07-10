@@ -12,19 +12,19 @@ namespace DungeonTools.Server.Shared {
         public string? Decrypted { get; set; }
 
         [JsonIgnore]
-        public Stream? EncryptedStream => Encrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Encrypted))) : null;
+        public Stream? EncryptedStream => Encrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Encrypted!))) : null;
         [JsonIgnore]
-        public Stream? DecryptedStream => Decrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Decrypted))) : null;
+        public Stream? DecryptedStream => Decrypted != null ? new MemoryStream(Convert.FromBase64String(PadBase64String(Decrypted!))) : null;
 
         public static async ValueTask<EncryptionData> From(Stream? encrypted, Stream? decrypted) {
             EncryptionData result = new EncryptionData();
 
             if(encrypted != null) {
-                result.Encrypted = await GetBase64Data(encrypted);
+                result.Encrypted = await GetBase64Data(encrypted!);
             }
 
             if(decrypted != null) {
-                result.Decrypted = await GetBase64Data(decrypted);
+                result.Decrypted = await GetBase64Data(decrypted!);
             }
 
             return result;

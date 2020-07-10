@@ -33,10 +33,13 @@ namespace DungeonTools.Save.File {
         }
 
         private static async ValueTask<EncryptionData> CallEndpoint(Stream? encrypted, Stream? decrypted, string endpoint) {
-            using HttpContent content = new StringContent(JsonSerializer.Serialize(await EncryptionData.From(encrypted, decrypted)));
+            EncryptionData data = await EncryptionData.From(encrypted, decrypted);
+            string requestJson = JsonSerializer.Serialize(data, SerializerOptions);
+            using HttpContent content = new StringContent(requestJson);
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = await Client.PostAsync(endpoint, content);
-            return JsonSerializer.Deserialize<EncryptionData>(await response.Content.ReadAsStringAsync(), SerializerOptions);
+            string responseJson = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<EncryptionData>(responseJson, SerializerOptions);
         }
     }
 }
