@@ -25,7 +25,7 @@ namespace DungeonTools.Save.File {
         private static async ValueTask<Stream> TransformAsync(Stream input, ICryptoTransform transform) {
             MemoryStream output = new MemoryStream();
 
-            await using(CryptoStream crypto = new CryptoStream(input, transform, CryptoStreamMode.Read, true)) {
+            using (CryptoStream crypto = new CryptoStream(input, transform, CryptoStreamMode.Read)) {
                 await crypto.CopyToAsync(output);
             }
 

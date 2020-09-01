@@ -20,12 +20,12 @@ namespace DungeonTools.Save.File {
 
             long position = stream.Position;
             byte[] magic1 = new byte[Magic1.Length];
-            stream.Read(magic1);
+            stream.Read(magic1, 0, Magic1.Length);
 
             byte[] magic2 = new byte[Magic2.Length];
-            stream.Read(magic2);
+            stream.Read(magic2, 0, Magic2.Length);
 
-            if(!Magic1.SequenceEqual(magic1)) {
+            if (!Magic1.SequenceEqual(magic1)) {
                 stream.Position = position;
                 return false;
             }
@@ -56,8 +56,8 @@ namespace DungeonTools.Save.File {
 
         public static Stream PrependMagicToEncrypted(Stream stream) {
             MemoryStream output = new MemoryStream();
-            output.Write(Magic1);
-            output.Write(Magic2);
+            output.Write(Magic1, 0, Magic1.Length);
+            output.Write(Magic2, 0, Magic2.Length);
             stream.CopyTo(output);
             return output;
         }
